@@ -1,19 +1,14 @@
 const notes = require('express').Router();
-const { v4: uuidv4 } = require('uuid');
-const {
-  readFromFile,
-  readAndAppend,
-  writeToFile,
-} = require('../helpers/fsUtils');
+
 
 // GET Route for retrieving all the tips
-tips.get('/', (req, res) => {
+notes.get('/', (req, res) => {
   readFromFile('./db/tips.json').then((data) => res.json(JSON.parse(data)));
 });
 
 // GET Route for a specific tip
 notes.get('/:tip_id', (req, res) => {
-  const noteId = req.params.note_id;
+  const Id = req.params.tip_id;
   readFromFile('./db/tips.json')
     .then((data) => JSON.parse(data))
     .then((json) => {
