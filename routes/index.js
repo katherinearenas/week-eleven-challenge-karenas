@@ -1,12 +1,14 @@
-// const router = require('express').Router();
+const router = require('express').Router();
 
 // // Import our modular routers for /tips and /feedback
-// const tipsRouter = require('./tips');
+const indexRouter = require('./index');
 // const feedbackRouter = require('./feedback');
 // const diagnosticsRouter = require('./diagnostics');
 
-// router.use('/tips', tipsRouter);
+// router.use('./index', indexRouter);
 // router.use('/feedback', feedbackRouter);
 // router.use('/diagnostics', diagnosticsRouter);
-
-// module.exports = router;
+router.get('/', (req, res) =>
+    res.sendFile(path.join(__dirname, './public/index.html'))
+  );
+module.exports = router;
