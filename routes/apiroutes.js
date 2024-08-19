@@ -1,28 +1,35 @@
 const app = require('express');
 const api = require('express').Router();
+const fs = require('fs')
 
 let notes = []
 
 
-api.get('/', (req, res) => {
+api.get('/notes', (req, res) => {
     console.info(`${req.method} request received for notes`);
-    readFromFile('./db/tips.json').then((data) => res.json(JSON.parse(data)));
+    fs.promises.readFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
   });
 
-api.post('/', (req, res) => {
-    const { id, title, note } = req.body;
+api.post('/notes', (req, res) => {
+    const { title, text } = req.body;
   
-    if (title && note) {
+    if (title && text) {
       const newNote = {
         title,
-        note,
-        note_id: uuid(),
+        text,
+        note_id: crypto.randomUUID(),
       };
   
-      readAndAppend(newNote, './db/db.json');
-      res.json(`Note added successfully`);
+      fs.promises.readFile('./db/db.json').then((data)=>{
+        let parseData = JSON.parse(data)
+        parseData.push(newNote)
+        fs.promises.writeFile('./db/db.json', JSON.stringify(parseData)).then((data)=> {
+        res.json(`Note added successfully`);  
+        })
+      });
+
     } else {
-      res.error('Error in adding note');
+      res.json('Error in adding note');
     }
   });
 
